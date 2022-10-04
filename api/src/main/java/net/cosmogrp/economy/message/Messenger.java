@@ -1,11 +1,9 @@
 package net.cosmogrp.economy.message;
 
-import org.bukkit.command.CommandSender;
-
-public interface MessageSender {
+public interface Messenger {
 
     void sendMessage(
-            CommandSender source,
+            Sender source,
             String path,
             Object... replacements
     );

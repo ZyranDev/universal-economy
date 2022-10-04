@@ -1,7 +1,6 @@
 package net.cosmogrp.economy.transaction.amount;
 
 import net.cosmogrp.economy.account.EconomyAccount;
-import org.bukkit.util.NumberConversions;
 
 public class TextTransactionAmount implements TransactionAmount {
 

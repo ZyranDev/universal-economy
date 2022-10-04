@@ -1,24 +1,23 @@
 package net.cosmogrp.economy.context;
 
 import net.cosmogrp.economy.account.EconomyAccount;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionDetails;
 import net.cosmogrp.economy.transaction.TransactionType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the context of a transaction.
  * We need this to be able to send the transaction
- * details to the player and apply the needed
+ * details to the Sender and apply the needed
  * handlers & interceptors since we use Chain of Responsibility
  * pattern.
  */
 public interface TransactionContext {
 
-    CommandSender getSource();
+    Sender getSource();
 
-    @Nullable Player getTarget();
+    @Nullable Sender getTarget();
 
     TransactionType getType();
 

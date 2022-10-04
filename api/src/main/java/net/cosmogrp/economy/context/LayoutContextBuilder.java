@@ -1,31 +1,31 @@
 package net.cosmogrp.economy.context;
 
 import net.cosmogrp.economy.account.EconomyAccount;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public abstract class LayoutContextBuilder<T extends TransactionContextBuilder>
         implements TransactionContextBuilder {
 
-    protected CommandSender source;
-    protected Player target;
+    protected Sender source;
+    protected Sender target;
     protected double amount;
     protected TransactionType type;
     protected EconomyAccount sourceAccount;
     protected EconomyAccount targetAccount;
     protected String parentPath;
 
-    protected LayoutContextBuilder() {}
+    protected LayoutContextBuilder() {
+    }
 
     @Override
-    public T setSource(CommandSender sourcePlayer) {
+    public T setSource(Sender sourcePlayer) {
         this.source = sourcePlayer;
         return back();
     }
 
     @Override
-    public T setTarget(Player targetPlayer) {
+    public T setTarget(Sender targetPlayer) {
         this.target = targetPlayer;
         return back();
     }

@@ -1,18 +1,17 @@
 package net.cosmogrp.economy.context;
 
 import net.cosmogrp.economy.account.EconomyAccount;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionDetails;
 import net.cosmogrp.economy.transaction.TransactionType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import static net.cosmogrp.economy.account.EconomyAccount.DECIMAL_FORMAT;
 
 public class DefaultTransactionContext
         implements TransactionContext {
 
-    private final CommandSender source;
-    private final Player target;
+    private final Sender source;
+    private final Sender target;
 
     private final double inputAmount;
     private final TransactionType type;
@@ -28,7 +27,7 @@ public class DefaultTransactionContext
     private double outputAmount;
 
     public DefaultTransactionContext(
-            CommandSender source, Player target,
+            Sender source, Sender target,
             double inputAmount, TransactionType type,
             EconomyAccount sourceAccount,
             EconomyAccount targetAccount,
@@ -47,12 +46,12 @@ public class DefaultTransactionContext
     }
 
     @Override
-    public CommandSender getSource() {
+    public Sender getSource() {
         return source;
     }
 
     @Override
-    public Player getTarget() {
+    public Sender getTarget() {
         return target;
     }
 

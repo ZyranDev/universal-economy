@@ -2,36 +2,35 @@ package net.cosmogrp.economy;
 
 import net.cosmogrp.economy.account.EconomyAccount;
 import net.cosmogrp.economy.context.TransactionContext;
-import net.cosmogrp.economy.message.MessageSender;
+import net.cosmogrp.economy.message.Messenger;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionType;
 import net.cosmogrp.economy.transaction.amount.TransactionAmount;
 import net.cosmogrp.economy.transaction.executor.TransactionExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractEconomyHandler<T extends TransactionContext>
         implements EconomyHandler {
 
     private final TransactionExecutor<T> transactionExecutor;
-    protected final MessageSender messageSender;
+    protected final Messenger messenger;
 
     protected final String identifier;
 
     public AbstractEconomyHandler(
             TransactionExecutor<T> transactionExecutor,
-            MessageSender messageSender,
+            Messenger messenger,
             String identifier
     ) {
         this.transactionExecutor = transactionExecutor;
-        this.messageSender = messageSender;
+        this.messenger = messenger;
         this.identifier = identifier;
     }
 
     @Override
     public boolean deposit(
-            @Nullable CommandSender source,
-            Player target,
+            @Nullable Sender source,
+            Sender target,
             double amount
     ) {
         return execute(
@@ -42,8 +41,8 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
 
     @Override
     public boolean withdraw(
-            @Nullable CommandSender source,
-            Player target,
+            @Nullable Sender source,
+            Sender target,
             double amount
     ) {
         return execute(
@@ -54,7 +53,7 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
 
     @Override
     public boolean transfer(
-            Player source, Player target,
+            Sender source, Sender target,
             TransactionAmount amount
     ) {
         return executeTransfer(
@@ -65,21 +64,21 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
     }
 
     @Override
-    public void sendBalance(Player source) {
+    public void sendBalance(Sender source) {
         EconomyAccount account = getAccount(source);
 
         if (account == null) {
             return;
         }
 
-        messageSender.sendMessage(
+        messenger.sendMessage(
                 source, "balance",
                 "%balance%", account.getBalance()
         );
     }
 
     @Override
-    public boolean hasEnough(Player source, double amount) {
+    public boolean hasEnough(Sender source, double amount) {
         EconomyAccount account = getAccount(source);
 
         if (account == null) {
@@ -90,7 +89,7 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
     }
 
     @Override
-    public double getBalance(Player source) {
+    public double getBalance(Sender source) {
         EconomyAccount account = getAccount(source);
 
         if (account == null) {
@@ -101,8 +100,8 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
     }
 
     protected boolean executeTransfer(
-            CommandSender source,
-            @Nullable Player target,
+            Sender source,
+            @Nullable Sender target,
             TransactionAmount amount,
             EconomyAccount sourceAccount,
             EconomyAccount targetAccount
@@ -125,7 +124,7 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
     }
 
     private boolean execute(
-            CommandSender source, Player target,
+            Sender source, Sender target,
             TransactionType type, double amount
     ) {
         if (source == null) {
@@ -139,11 +138,11 @@ public abstract class AbstractEconomyHandler<T extends TransactionContext>
         ));
     }
 
-    protected abstract CommandSender defaultSource();
+    protected abstract Sender defaultSource();
 
     protected abstract T createContext(
-            CommandSender source,
-            Player target,
+            Sender source,
+            Sender target,
             double amount,
             TransactionType type,
             EconomyAccount sourceAccount,

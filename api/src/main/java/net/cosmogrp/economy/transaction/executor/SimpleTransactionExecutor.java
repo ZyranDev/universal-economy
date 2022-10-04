@@ -1,32 +1,22 @@
 package net.cosmogrp.economy.transaction.executor;
 
 import net.cosmogrp.economy.context.TransactionContext;
-import net.cosmogrp.economy.message.MessageSender;
+import net.cosmogrp.economy.message.Messenger;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionDetails;
 import net.cosmogrp.economy.transaction.TransactionType;
-import net.cosmogrp.economy.transaction.handle.DepositTransactionHandler;
-import net.cosmogrp.economy.transaction.handle.EnoughBalanceHandler;
-import net.cosmogrp.economy.transaction.handle.NegativeAmountHandler;
-import net.cosmogrp.economy.transaction.handle.TransactionHandler;
-import net.cosmogrp.economy.transaction.handle.TransferTransactionHandler;
-import net.cosmogrp.economy.transaction.handle.WithdrawTransactionHandler;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import net.cosmogrp.economy.transaction.handle.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SimpleTransactionExecutor<T extends TransactionContext>
         implements TransactionExecutor<T> {
 
     private final Map<TransactionType, List<TransactionHandler>> handlers;
-    private final MessageSender messageSender;
+    private final Messenger messenger;
 
-    public SimpleTransactionExecutor(MessageSender messageSender) {
-        this.messageSender = messageSender;
+    public SimpleTransactionExecutor(Messenger messenger) {
+        this.messenger = messenger;
         this.handlers = new HashMap<>();
     }
 
@@ -54,8 +44,8 @@ public class SimpleTransactionExecutor<T extends TransactionContext>
             }
         }
 
-        CommandSender source = context.getSource();
-        Player target = context.getTarget();
+        Sender source = context.getSource();
+        Sender target = context.getTarget();
 
         sendDetails(source, context.getSourceDetails());
 
@@ -103,11 +93,11 @@ public class SimpleTransactionExecutor<T extends TransactionContext>
     }
 
     public void sendDetails(
-            CommandSender source,
+            Sender source,
             TransactionDetails details
     ) {
         for (TransactionDetails.Detail detail : details.getDetails()) {
-            messageSender.sendMessage(
+            messenger.sendMessage(
                     source, detail.getPath(),
                     detail.getReplacements()
             );

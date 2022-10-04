@@ -1,15 +1,14 @@
 package net.cosmogrp.economy.context;
 
 import net.cosmogrp.economy.account.EconomyAccount;
+import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public interface TransactionContextBuilder {
 
-    TransactionContextBuilder setSource(CommandSender source);
+    TransactionContextBuilder setSource(Sender source);
 
-    TransactionContextBuilder setTarget(Player targetPlayer);
+    TransactionContextBuilder setTarget(Sender targetPlayer);
 
     TransactionContextBuilder setAmount(double amount);
 

@@ -2,7 +2,7 @@ package net.cosmogrp.economy.transaction.handle;
 
 import net.cosmogrp.economy.account.EconomyAccount;
 import net.cosmogrp.economy.context.TransactionContext;
-import org.bukkit.entity.Player;
+import net.cosmogrp.economy.message.Sender;
 
 public class TransferTransactionHandler implements TransactionHandler {
     @Override
@@ -19,7 +19,7 @@ public class TransferTransactionHandler implements TransactionHandler {
         sourceAccount.withdraw(context.getInputAmount());
         targetAccount.deposit(context.getOutputAmount());
 
-        Player target = context.getTarget();
+        Sender target = context.getTarget();
         String outputAmount = context.getHumanOutput();
 
         if (target == null) {
