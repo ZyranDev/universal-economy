@@ -5,7 +5,9 @@ import net.cosmogrp.economy.message.Messenger;
 import net.cosmogrp.economy.message.Sender;
 import net.cosmogrp.economy.transaction.TransactionDetails;
 import net.cosmogrp.economy.transaction.TransactionType;
-import net.cosmogrp.economy.transaction.handle.*;
+import net.cosmogrp.economy.transaction.handle.EnoughBalanceHandler;
+import net.cosmogrp.economy.transaction.handle.NegativeAmountHandler;
+import net.cosmogrp.economy.transaction.handle.TransactionHandler;
 
 import java.util.*;
 
@@ -71,25 +73,6 @@ public class SimpleTransactionExecutor<T extends TransactionContext>
         }
 
         Collections.addAll(registeredHandlers, handlers);
-
-        TransactionHandler executionHandler = null;
-
-        switch (transactionType) {
-            case DEPOSIT: {
-                executionHandler = new DepositTransactionHandler();
-                break;
-            }
-            case WITHDRAW: {
-                executionHandler = new WithdrawTransactionHandler();
-                break;
-            }
-            case TRANSFER: {
-                executionHandler = new TransferTransactionHandler();
-                break;
-            }
-        }
-
-        registeredHandlers.add(executionHandler);
     }
 
     public void sendDetails(
